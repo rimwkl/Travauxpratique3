@@ -31,3 +31,13 @@
 <img src="captures/img_29.png">
 <img src="captures/img_30.png">
 <img src="captures/img_31.png">
+<img src="captures/img_32.png">
+<img src="captures/img_33.png">
+<img src="captures/img_34.png">
+<img src="captures/img_35.png">
+<img src="captures/img_36.png">
+<img src="captures/img_37.png">
+<img src="captures/img_38.png">
+<img src="captures/img_39.png">
+<img src="captures/img_40.png">
+<img src="captures/img_41.png">

@@ -21,9 +21,10 @@ public class Travp3Application implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		patientRepository.save(new Patient(null,"Yassine",new Date(),false,34));
-		patientRepository.save(new Patient(null,"Rim",new Date(),false,4321));
+		patientRepository.save(new Patient(null,"Yassine",new Date(),false,123));
+		patientRepository.save(new Patient(null,"Rima",new Date(),false,341));
 		patientRepository.save(new Patient(null,"Lina",new Date(),false,344));
+
 
 
 
