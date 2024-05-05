@@ -2,6 +2,7 @@ package com.example.travp3;
 
 import com.example.travp3.entities.Patient;
 import com.example.travp3.repository.PatientRepository;
+import com.example.travp3.security.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -66,7 +67,7 @@ public class Travp3Application implements CommandLineRunner {
 
 
 
-@Bean
+//@Bean  pour jdbc authentication
 	CommandLineRunner commandLineRunner(JdbcUserDetailsManager jdbcUserDetailsManager){
 		PasswordEncoder passwordEncoder=passwordEncoder();
 		return args -> {
@@ -86,9 +87,28 @@ public class Travp3Application implements CommandLineRunner {
 			  jdbcUserDetailsManager.createUser(
 					User.withUsername("admin2").password(passwordEncoder.encode("1234")).roles("USER","ADMIN").build()
 			);
-			//une fois je cree un user je declare un objet user
+
 		};
 	}
+	@Bean  //si jai executer ca une fois dons les users seront cree donc apres je dois commenter bean
+	CommandLineRunner commandLineRunnerUserDetails(AccountService accountService){
+		return args -> {
+			accountService.addNewRole("USER");
+			accountService.addNewRole("ADMIN");
+			accountService.addNewUser("user1","1234","user1@gmail.com","1234");
+			accountService.addNewUser("user2","1234","user2@gmail.com","1234");
+			accountService.addNewUser("admin","1234","admin@gmail.com","1234");
+
+			accountService.addRoleToUser("user1","USER");
+			accountService.addRoleToUser("user2","USER");
+			accountService.addRoleToUser("admin","USER");
+			accountService.addRoleToUser("admin","ADMIN");
+
+
+
+		};
+	}
+
 
 	@Bean
 	PasswordEncoder passwordEncoder() {

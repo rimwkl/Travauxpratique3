@@ -1,5 +1,6 @@
 package com.example.travp3.security;
 
+import com.example.travp3.security.service.UserDetailServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -7,6 +8,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -20,17 +22,18 @@ import javax.sql.DataSource;
 @EnableMethodSecurity(prePostEnabled = true)
 
 public class SecurityConfig {
+    private UserDetailServiceImpl userDetailServiceImpl;
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    //gerer les users au niveau de bd soit en fait InMemoryUserDetailsManager ou
+    //gerer les users au niveau de bd soit en fait InMemoryUserDetailsManager ou jdbc ou
 //    @Bean
 //    public UserDetailsService userDetailsService() {
 //
 //        return null;
 //    }
-    @Bean
+    //@Bean
     public JdbcUserDetailsManager jdbcUserDetailsManager(DataSource dataSource){
         return new JdbcUserDetailsManager(dataSource);
     }
@@ -63,6 +66,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(ar->ar.anyRequest().authenticated())
                 .exceptionHandling(ar-> ar.accessDeniedPage("/notAuthorized"))
                 .rememberMe(Customizer.withDefaults())
+                .userDetailsService(userDetailServiceImpl)
                 .build();
     }
 }
