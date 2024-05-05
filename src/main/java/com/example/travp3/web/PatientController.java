@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,7 +23,7 @@ public class PatientController {
     private PatientRepository patientRepository;
 
     //methode qui retourne une vue patients.html
-    @GetMapping("/index")
+    @GetMapping("/user/index")
     //si jaipas utiliser ca si je veux recuperer les donner de la requette je doit creec objet httpservletrequest et dans ce quoi il va prendre request.getparametrepage page...
     public String index(Model model, @RequestParam(name = "page", defaultValue = "0") int p,
                         @RequestParam(name = "size", defaultValue = "4") int s,
@@ -46,41 +47,45 @@ public class PatientController {
         //quand il supprime il doit revevir pour affiche "redirection"
         return "redirect:/index?page="+page+"&keyword="+keyword;
     }*/
-    @GetMapping("/delete")
+    @GetMapping("/admin/delete")
+   // @PreAuthorize("hasRole('ROLE_ADMIN')")
     //pour faire delete
     public String delete(@RequestParam(name = "id") Long id, @RequestParam(name = "keyword", defaultValue = "") String keyword,
                          @RequestParam(name = "page", defaultValue = "0") int page) {
         patientRepository.deleteById(id);
-        return "redirect:/index?page=" + page + "&keyword=" + keyword;
+        return "redirect:/user/index?page=" + page + "&keyword=" + keyword;
     }
 
     @GetMapping("/")
     public String home() {
-        return "redirect:/index";
+        return "redirect:/user/index";
     }
 
-    @GetMapping("/patients")
+    @GetMapping("/admin/patients")
     @ResponseBody
     public List<Patient> listPatients() {
         return patientRepository.findAll();
     }
-    @GetMapping("/formPatients")
+    @GetMapping("/admin/formPatients")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     public String formPatients(Model model){
         model.addAttribute("patient",new Patient());
         return "formPatients";
     }
 
-    @PostMapping(path = "/save")
+    @PostMapping(path = "/admin/save")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     public String save(Model model, @Valid Patient patient, BindingResult bindingResult,
                        @RequestParam(defaultValue = "0") int page,
                        @RequestParam(defaultValue = "") String keyword){
         if(bindingResult.hasErrors()) return "formPatients";
         patientRepository.save(patient);
-        return "redirect:/index?page"+page+"&keyword="+keyword;
+        return "redirect:/user/index?page"+page+"&keyword="+keyword;
 
     }
 
-    @GetMapping("/editPatient")
+    @GetMapping("/admin/editPatient")
+   // @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String editPatient(Model model,Long id,String keyword,int page){
         Patient patient=patientRepository.findById(id).orElse(null);
         if(patient==null)throw new RuntimeException("Patient introuvable");
@@ -89,6 +94,7 @@ public class PatientController {
         model.addAttribute("keyword",keyword);
         return "editPatient";
     }
+
 
 
 }
