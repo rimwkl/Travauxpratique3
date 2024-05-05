@@ -30,8 +30,11 @@ public class SecurityConfig {
 //
 //        return null;
 //    }
-
-     @Bean
+    @Bean
+    public JdbcUserDetailsManager jdbcUserDetailsManager(DataSource dataSource){
+        return new JdbcUserDetailsManager(dataSource);
+    }
+     //@Bean
     public InMemoryUserDetailsManager inMemoryUserDetailsManager(PasswordEncoder passwordEncoder){
         String encodedPassword = passwordEncoder.encode("4321");
         System.out.println(encodedPassword);

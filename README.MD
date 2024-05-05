@@ -42,3 +42,8 @@
 <img src="captures/img_40.png">
 <img src="captures/img_41.png">
 <img src="captures/img_42.png">
+<img src="captures/img_43.png">
+<img src="captures/img_44.png">
+<img src="captures/img_45.png">
+<img src="captures/img_46.png">
+<img src="captures/img_47.png">
